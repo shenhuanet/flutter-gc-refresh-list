@@ -77,14 +77,14 @@ class GCRefreshListUtil {
   }
 }
 
-class SLRefreshList extends StatelessWidget {
+class GCRefreshList extends StatelessWidget {
 
   final RefreshListController controller;
   final Widget listView;
   final String emptyImage;
   final GCRefreshListConfig? config;
 
-  const SLRefreshList({
+  const GCRefreshList({
     Key? key,
     required this.controller,
     required this.listView,
