@@ -16,6 +16,8 @@ class GCRefreshListConfig {
   final Widget? emptyWidget;
   final Widget? initLoadingWidget;
 
+  final String? noDataText;
+
   GCRefreshListConfig({
     this.textStyle,
     this.releaseColor,
@@ -26,7 +28,8 @@ class GCRefreshListConfig {
     this.emptyTop,
     this.emptyImageHeight,
     this.emptyWidget,
-    this.initLoadingWidget
+    this.initLoadingWidget,
+    this.noDataText
   });
 }
 
@@ -41,7 +44,8 @@ class GCRefreshListUtil {
     emptyTop: 45,
     emptyImageHeight: 150,
     emptyWidget: const Text("没有找到您想要的数据", style: TextStyle(fontSize: 14, color: Colors.white38)),
-    initLoadingWidget: const Text("正在加载数据...", style: TextStyle(fontSize: 14, color: Colors.white38))
+    initLoadingWidget: const Text("正在加载数据...", style: TextStyle(fontSize: 14, color: Colors.white38)),
+    noDataText: '没有更多数据了'
   );
 
   static GCRefreshListConfig? _config;
@@ -59,6 +63,7 @@ class GCRefreshListUtil {
       emptyImageHeight: config.emptyImageHeight ?? _defaultConfig.emptyImageHeight,
       emptyWidget: config.emptyWidget ?? _defaultConfig.emptyWidget,
       initLoadingWidget: config.initLoadingWidget ?? _defaultConfig.initLoadingWidget,
+      noDataText: config.noDataText ?? _defaultConfig.noDataText,
     );
   }
 
@@ -81,7 +86,7 @@ class GCRefreshList extends StatelessWidget {
 
   final RefreshListController controller;
   final Widget listView;
-  final String emptyImage;
+  final String? emptyImage;
   final GCRefreshListConfig? config;
 
   const GCRefreshList({
@@ -120,16 +125,16 @@ class GCRefreshList extends StatelessWidget {
       else if (controller.state.value == RefreshListState.empty) {
         _child = Padding(
           padding: EdgeInsets.only(top: config?.emptyTop ?? GCRefreshListUtil.config.emptyTop!),
-          child: Column(
+          child: emptyImage != null ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(
-                emptyImage,
+                emptyImage!,
                 height: config?.emptyImageHeight ?? GCRefreshListUtil.config.emptyImageHeight!,
               ),
               config?.emptyWidget ?? GCRefreshListUtil.config.emptyWidget!
             ],
-          ),
+          ) : (config?.emptyWidget ?? GCRefreshListUtil.config.emptyWidget!)
         );
       }
       return RefreshConfiguration(
@@ -180,7 +185,7 @@ class GCRefreshList extends StatelessWidget {
               height: 20.0,
               width: 20.0
             ),
-            noDataText: '没有更多数据了',
+            noDataText: config?.noDataText ?? '没有更多数据了',
             canLoadingText: '上拉加载更多',
             canLoadingIcon: Icon(Icons.arrow_upward,
               color: config?.releaseColor ?? GCRefreshListUtil.config.releaseColor,
