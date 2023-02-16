@@ -17,6 +17,7 @@ class GCRefreshListConfig {
   final Widget? initLoadingWidget;
 
   final String? noDataText;
+  final Widget? noDataWidget;
 
   GCRefreshListConfig({
     this.textStyle,
@@ -29,7 +30,8 @@ class GCRefreshListConfig {
     this.emptyImageHeight,
     this.emptyWidget,
     this.initLoadingWidget,
-    this.noDataText
+    this.noDataText,
+    this.noDataWidget
   });
 }
 
@@ -64,6 +66,7 @@ class GCRefreshListUtil {
       emptyWidget: config.emptyWidget ?? _defaultConfig.emptyWidget,
       initLoadingWidget: config.initLoadingWidget ?? _defaultConfig.initLoadingWidget,
       noDataText: config.noDataText ?? _defaultConfig.noDataText,
+      noDataWidget: config.noDataWidget
     );
   }
 
@@ -185,7 +188,8 @@ class GCRefreshList extends StatelessWidget {
               height: 20.0,
               width: 20.0
             ),
-            noDataText: config?.noDataText ?? '没有更多数据了',
+            noDataText: config?.noDataText ?? GCRefreshListUtil.config.noDataText,
+            noMoreIcon: config?.noDataWidget ?? GCRefreshListUtil.config.noDataWidget,
             canLoadingText: '上拉加载更多',
             canLoadingIcon: Icon(Icons.arrow_upward,
               color: config?.releaseColor ?? GCRefreshListUtil.config.releaseColor,
