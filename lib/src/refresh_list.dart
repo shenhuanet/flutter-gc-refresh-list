@@ -49,8 +49,12 @@ class GCRefreshListUtil {
     headerHeight: 40,
     emptyTop: 45,
     emptyImageHeight: 150,
-    emptyWidget: const Text("没有找到您想要的数据", style: TextStyle(fontSize: 14, color: Colors.white38)),
-    initLoadingWidget: const Text("正在加载数据...", style: TextStyle(fontSize: 14, color: Colors.white38)),
+    emptyWidget: const Text("没有找到您想要的数据",
+      style: TextStyle(fontSize: 14, color: Colors.black26)
+    ),
+    initLoadingWidget: const Text("正在加载数据...",
+      style: TextStyle(fontSize: 14, color: Colors.black26)
+    ),
     noDataText: '没有更多数据了'
   );
 
@@ -77,7 +81,9 @@ class GCRefreshListUtil {
   }
 
   /// 数据为空的显示样式，可通用
-  static Widget emptyWidget({GCRefreshListConfig? config, String emptyImagePath = "assets/images/empty_noData.png"}) {
+  static Widget emptyWidget(
+      {GCRefreshListConfig? config,
+      String emptyImagePath = "assets/images/empty_noData.png"}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -92,7 +98,6 @@ class GCRefreshListUtil {
 }
 
 class GCRefreshList extends StatelessWidget {
-
   final RefreshListController controller;
   final Widget listView;
   final String? emptyImage;
@@ -125,7 +130,7 @@ class GCRefreshList extends StatelessWidget {
           child: Center(
             child: Text(
               "加载数据失败，点击重试",
-              style: (config?.textStyle ?? GCRefreshListUtil.config.textStyle!).copyWith(color: const Color(0xfff5a623)),
+              style: (config?.textStyle ?? GCRefreshListUtil.config.textStyle!) .copyWith(color: const Color(0xfff5a623)),
             ),
           ),
         );
@@ -133,17 +138,23 @@ class GCRefreshList extends StatelessWidget {
       //没有数据
       else if (controller.state.value == RefreshListState.empty) {
         _child = Padding(
-          padding: EdgeInsets.only(top: config?.emptyTop ?? GCRefreshListUtil.config.emptyTop!),
-          child: emptyImage != null ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                emptyImage!,
-                height: config?.emptyImageHeight ?? GCRefreshListUtil.config.emptyImageHeight!,
-              ),
-              config?.emptyWidget ?? GCRefreshListUtil.config.emptyWidget!
-            ],
-          ) : (config?.emptyWidget ?? GCRefreshListUtil.config.emptyWidget!)
+          padding: EdgeInsets.only(
+            top: config?.emptyTop ?? GCRefreshListUtil.config.emptyTop!
+          ),
+          child: emptyImage != null
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    emptyImage!,
+                    height: config?.emptyImageHeight ??
+                        GCRefreshListUtil.config.emptyImageHeight!,
+                  ),
+                  config?.emptyWidget ??
+                      GCRefreshListUtil.config.emptyWidget!
+                ],
+              )
+            : (config?.emptyWidget ?? GCRefreshListUtil.config.emptyWidget!)
         );
       }
       return RefreshConfiguration(
@@ -163,11 +174,13 @@ class GCRefreshList extends StatelessWidget {
               size: 24
             ),
             refreshingText: '刷新中...',
-            refreshingIcon: SizedBox(child: CircularProgressIndicator(
+            refreshingIcon: SizedBox(
+              child: CircularProgressIndicator(
                 strokeWidth: 2,
                 color: config?.refreshingColor ?? GCRefreshListUtil.config.refreshingColor
               ),
-              height: 20.0, width: 20.0
+              height: 20.0,
+              width: 20.0
             ),
             completeText: '刷新完成',
             completeIcon: Icon(Icons.check_circle,
@@ -175,7 +188,8 @@ class GCRefreshList extends StatelessWidget {
               size: 20
             ),
             failedText: '刷新失败,请重试',
-            failedIcon: const Icon(Icons.error, color: Color(0xfff5a623), size: 20),
+            failedIcon:
+                const Icon(Icons.error, color: Color(0xfff5a623), size: 20),
             idleText: '下拉刷新',
             idleIcon: Icon(Icons.arrow_downward,
               color: config?.releaseColor ?? GCRefreshListUtil.config.releaseColor,
