@@ -18,6 +18,8 @@ class GCRefreshListConfig {
 
   final String? noDataText;
   final Widget? noDataWidget;
+  final ClassicHeader? header;
+  final ClassicFooter? footer;
 
   GCRefreshListConfig({
     this.textStyle,
@@ -31,7 +33,9 @@ class GCRefreshListConfig {
     this.emptyWidget,
     this.initLoadingWidget,
     this.noDataText,
-    this.noDataWidget
+    this.noDataWidget,
+    this.header,
+    this.footer
   });
 }
 
@@ -66,7 +70,9 @@ class GCRefreshListUtil {
       emptyWidget: config.emptyWidget ?? _defaultConfig.emptyWidget,
       initLoadingWidget: config.initLoadingWidget ?? _defaultConfig.initLoadingWidget,
       noDataText: config.noDataText ?? _defaultConfig.noDataText,
-      noDataWidget: config.noDataWidget
+      noDataWidget: config.noDataWidget,
+      header: config.header,
+      footer: config.footer
     );
   }
 
@@ -148,7 +154,7 @@ class GCRefreshList extends StatelessWidget {
           enablePullUp: controller.enablePullUp.value,
           enablePullDown: controller.enablePullDown.value,
           child: _child,
-          header: ClassicHeader(
+          header: config?.header ?? ClassicHeader(
             height: config?.headerHeight ?? GCRefreshListUtil.config.headerHeight!,
             textStyle: config?.textStyle ?? GCRefreshListUtil.config.textStyle!,
             releaseText: '释放刷新',
@@ -176,7 +182,7 @@ class GCRefreshList extends StatelessWidget {
               size: 24
             ),
           ),
-          footer: ClassicFooter(
+          footer: config?.footer ?? ClassicFooter(
             height: config?.headerHeight ?? GCRefreshListUtil.config.headerHeight!,
             textStyle: config?.textStyle ?? GCRefreshListUtil.config.textStyle!,
             loadingText: '加载中...',

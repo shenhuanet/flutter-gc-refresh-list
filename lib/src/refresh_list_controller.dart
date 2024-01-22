@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 分页下拉刷新
-abstract class GCGetxRefreshListController<T> extends GetxController {
+abstract class GCGetxRefreshListController<T> extends FullLifeCycleController {
   late RefreshListController refreshListController;
   // 自动调用刷新？默认true
   final bool initDoRefresh;
@@ -104,6 +104,7 @@ class RefreshListController {
   Function() onLoading;
 
   //首次加载
+  /// 注意：对于看不见ListView，refreshListController 可以 使用onInit()去做请求，刷新列表
   Function() onInit;
 
   Key? key;
