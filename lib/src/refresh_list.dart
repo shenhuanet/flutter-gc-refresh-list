@@ -17,6 +17,8 @@ class GCRefreshListConfig {
 
   final String? noDataText;
   final Widget? noDataWidget;
+  final ClassicHeader? header;
+  final ClassicFooter? footer;
 
   GCRefreshListConfig({
     this.textStyle,
@@ -29,7 +31,9 @@ class GCRefreshListConfig {
     this.emptyWidget,
     this.initLoadingWidget,
     this.noDataText,
-    this.noDataWidget
+    this.noDataWidget,
+    this.header,
+    this.footer
   });
 }
 
@@ -42,8 +46,12 @@ class GCRefreshListUtil {
     failedColor: const Color(0xFFFF6E6E),
     headerHeight: 40,
     emptyTop: 45,
-    emptyWidget: const Text("没有找到您想要的数据", style: TextStyle(fontSize: 14, color: Colors.white38)),
-    initLoadingWidget: const Text("正在加载数据...", style: TextStyle(fontSize: 14, color: Colors.white38)),
+    emptyWidget: const Text("没有找到您想要的数据",
+      style: TextStyle(fontSize: 14, color: Colors.black26)
+    ),
+    initLoadingWidget: const Text("正在加载数据...",
+      style: TextStyle(fontSize: 14, color: Colors.black26)
+    ),
     noDataText: '没有更多数据了'
   );
 
@@ -62,13 +70,14 @@ class GCRefreshListUtil {
       emptyWidget: config.emptyWidget ?? _defaultConfig.emptyWidget,
       initLoadingWidget: config.initLoadingWidget ?? _defaultConfig.initLoadingWidget,
       noDataText: config.noDataText ?? _defaultConfig.noDataText,
-      noDataWidget: config.noDataWidget
+      noDataWidget: config.noDataWidget,
+      header: config.header,
+      footer: config.footer
     );
   }
 }
 
 class GCRefreshList extends StatelessWidget {
-
   final RefreshListController controller;
   final Widget listView;
   final GCRefreshListConfig? config;
@@ -99,7 +108,7 @@ class GCRefreshList extends StatelessWidget {
           child: Center(
             child: Text(
               "加载数据失败，点击重试",
-              style: (config?.textStyle ?? GCRefreshListUtil.config.textStyle!).copyWith(color: const Color(0xfff5a623)),
+              style: (config?.textStyle ?? GCRefreshListUtil.config.textStyle!) .copyWith(color: const Color(0xfff5a623)),
             ),
           ),
         );
@@ -107,7 +116,9 @@ class GCRefreshList extends StatelessWidget {
       //没有数据
       else if (controller.state.value == RefreshListState.empty) {
         _child = Padding(
-          padding: EdgeInsets.only(top: config?.emptyTop ?? GCRefreshListUtil.config.emptyTop!),
+          padding: EdgeInsets.only(
+            top: config?.emptyTop ?? GCRefreshListUtil.config.emptyTop!
+          ),
           child: config?.emptyWidget ?? GCRefreshListUtil.config.emptyWidget!
         );
       }
@@ -119,7 +130,7 @@ class GCRefreshList extends StatelessWidget {
           enablePullUp: controller.enablePullUp.value,
           enablePullDown: controller.enablePullDown.value,
           child: _child,
-          header: ClassicHeader(
+          header: config?.header ?? ClassicHeader(
             height: config?.headerHeight ?? GCRefreshListUtil.config.headerHeight!,
             textStyle: config?.textStyle ?? GCRefreshListUtil.config.textStyle!,
             releaseText: '释放刷新',
@@ -133,7 +144,8 @@ class GCRefreshList extends StatelessWidget {
                 strokeWidth: 2,
                 color: config?.refreshingColor ?? GCRefreshListUtil.config.refreshingColor
               ),
-              height: 20.0, width: 20.0
+              height: 20.0,
+              width: 20.0
             ),
             completeText: '刷新完成',
             completeIcon: Icon(Icons.check_circle,
@@ -141,14 +153,15 @@ class GCRefreshList extends StatelessWidget {
               size: 20
             ),
             failedText: '刷新失败,请重试',
-            failedIcon: const Icon(Icons.error, color: Color(0xfff5a623), size: 20),
+            failedIcon:
+            const Icon(Icons.error, color: Color(0xfff5a623), size: 20),
             idleText: '下拉刷新',
             idleIcon: Icon(Icons.arrow_downward,
               color: config?.releaseColor ?? GCRefreshListUtil.config.releaseColor,
               size: 24
             ),
           ),
-          footer: ClassicFooter(
+          footer: config?.footer ?? ClassicFooter(
             height: config?.headerHeight ?? GCRefreshListUtil.config.headerHeight!,
             textStyle: config?.textStyle ?? GCRefreshListUtil.config.textStyle!,
             loadingText: '加载中...',
