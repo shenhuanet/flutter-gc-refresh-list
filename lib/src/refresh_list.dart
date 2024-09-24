@@ -92,6 +92,7 @@ class GCRefreshList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      String? _noDataText = config?.noDataText ?? GCRefreshListUtil.config.noDataText;
       //列表
       Widget _child = listView;
       //第一次加载
@@ -121,6 +122,7 @@ class GCRefreshList extends StatelessWidget {
           ),
           child: config?.emptyWidget ?? GCRefreshListUtil.config.emptyWidget!
         );
+        _noDataText = "";
       }
       return RefreshConfiguration(
         headerTriggerDistance: 60,
@@ -173,7 +175,7 @@ class GCRefreshList extends StatelessWidget {
               height: 20.0,
               width: 20.0
             ),
-            noDataText: config?.noDataText ?? GCRefreshListUtil.config.noDataText,
+            noDataText: _noDataText,
             noMoreIcon: config?.noDataWidget ?? GCRefreshListUtil.config.noDataWidget,
             canLoadingText: '上拉加载更多',
             canLoadingIcon: Icon(Icons.arrow_upward,
