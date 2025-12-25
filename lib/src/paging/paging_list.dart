@@ -104,7 +104,8 @@ class _GCPagingListState<T> extends State<GCPagingList<T>> {
           if (_pagingState is PagingStateData<T>) {
             final oldState = (_pagingState as PagingStateData<T>);
             if (value.length == 0) {
-              emit(oldState.copyWith(isLoadMore: false, hasMore: true));
+              emit(oldState.copyWith(
+                  isLoadMore: false, hasMore: widget.pageDataSource.hasMore));
             } else {
               emit(
                 oldState.copyWith(
